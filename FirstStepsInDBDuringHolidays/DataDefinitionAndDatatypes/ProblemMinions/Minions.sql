@@ -58,3 +58,26 @@ VALUES (1, 'Gosho','asdqweasdasd', 1.79999, 100.01, 'm', '1984-02-29', 'I am Gos
 	   (3, 'Gosho','asdqweasdasd', 1.79999, 100.01, 'm', '1984-02-29', 'I am Gosho'),
 	   (4, 'Gosho','asdqweasdasd', 1.79999, 100.01, 'm', '1984-02-29', 'I am Gosho'),
 	   (5, 'Gosho','asdqweasdasd', 1.79999, 100.01, 'm', '1984-02-29', 'I am Gosho')
+
+--Problem 8
+CREATE TABLE Users(
+Id INT IDENTITY(1,1),
+Username NVARCHAR(30) NOT NULL,
+[Password] NVARCHAR(26) NOT NULL,
+ProfilPicture VARCHAR(MAX),
+LastLoginTime DATETIME,
+IsDeleted BIT
+
+CONSTRAINT PK_Users
+PRIMARY KEY (Id),
+
+CONSTRAINT UQ_Username
+UNIQUE (Username)
+)
+
+INSERT INTO Users (Username, Password, ProfilPicture, LastLoginTime, IsDeleted)
+	VALUES ('goshko', 'abcdefghijklmnopqrstuvwxyz', 123456, '2017-11-09 11:37:15', 1),
+	('AS', 'abcdefghijklmnopqrstuvwxyz', 123456, '2017-11-09 11:37:15', 1),
+	('DS', 'abcdefghijklmnopqrstuvwxyz', 123456, '2017-11-09 11:37:15', 1),
+	('FA', 'abcdefghijklmnopqrstuvwxyz', 123456, '2017-11-09 11:37:15', 1),
+	('A', 'abcdefghijklmnopqrstuvwxyz', 123456, '2017-11-09 11:37:15', 1)
