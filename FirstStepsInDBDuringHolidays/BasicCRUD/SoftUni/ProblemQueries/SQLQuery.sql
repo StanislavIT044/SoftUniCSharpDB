@@ -37,3 +37,44 @@ SELECT FirstName, LastName, JobTitle
 SELECT FirstName + ' ' + MiddleName  + ' ' + LastName
   FROM Employees
   WHERE Salary = 25000 OR Salary = 14000 OR Salary = 12500 OR Salary = 23600
+
+--Problem11
+SELECT FirstName, LastName
+  FROM Employees
+  WHERE ManagerID IS NULL
+
+ --Problem12
+SELECT FirstName, LastName, Salary
+  FROM Employees
+  WHERE Salary > 50000
+  ORDER BY Salary DESC
+
+--Problem13
+SELECT TOP(5) FirstName, LastName
+  FROM Employees
+  ORDER BY Salary DESC
+
+--Problem14
+SELECT FirstName, LastName
+  FROM Employees
+  WHERE DepartmentID != 4
+
+--Problem15
+SELECT *
+  FROM Employees
+  ORDER	BY Salary DESC, FirstName, LastName DESC, MiddleName
+
+--Problem16
+CREATE VIEW v_EmployeesSalaries AS
+SELECT
+    e.FirstName,
+	e.LastName,
+	e.Salary
+  FROM Employees AS e
+
+--Problem17
+CREATE VIEW V_EmployeeNameJobTitle AS
+SELECT
+    e.FirstName + ' ' +  ISNULL(e.MiddleName, '') + ' ' + e.LastName AS [Full Name] ,
+	e.JobTitle AS [Job Title]
+  FROM Employees AS e
