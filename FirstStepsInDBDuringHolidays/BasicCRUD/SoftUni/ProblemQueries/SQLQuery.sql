@@ -27,3 +27,13 @@ SELECT DISTINCT Salary
 SELECT * 
   FROM Employees
   WHERE JobTitle = 'Sales Representative'
+
+--Problem09
+SELECT FirstName, LastName, JobTitle
+  FROM Employees
+  WHERE Salary BETWEEN 20000 AND 30000
+
+--Problem10
+SELECT FirstName + ' ' + MiddleName  + ' ' + LastName
+  FROM Employees
+  WHERE Salary = 25000 OR Salary = 14000 OR Salary = 12500 OR Salary = 23600
