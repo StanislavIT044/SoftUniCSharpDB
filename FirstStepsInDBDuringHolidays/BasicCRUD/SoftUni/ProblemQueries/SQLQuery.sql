@@ -78,3 +78,25 @@ SELECT
     e.FirstName + ' ' +  ISNULL(e.MiddleName, '') + ' ' + e.LastName AS [Full Name] ,
 	e.JobTitle AS [Job Title]
   FROM Employees AS e
+
+--Problem18
+SELECT DISTINCT JobTitle
+  FROM Employees
+
+--Problem19
+SELECT TOP(10) *
+  FROM Projects
+  ORDER BY StartDate, [Name]
+
+--Problem20
+SELECT TOP(7) FirstName, LastName, HireDate
+  FROM Employees
+  ORDER BY HireDate DESC
+
+--Problem21
+UPDATE Employees
+  SET Salary += Salary * 0.12
+  WHERE DepartmentID IN (1, 2, 4, 11)
+
+SELECT e.Salary
+  FROM Employees AS e
