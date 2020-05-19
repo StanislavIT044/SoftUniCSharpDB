@@ -59,7 +59,21 @@ VALUES ('Gosho', 'asdfasdfasdg', 1.79, 1.2, 'm', '05-05-2020', 'asdasasd'),
 	   ('Gosho', 'asdfasdfasdg', 1.79, 1.2, 'm', '05-05-2020', 'asdasasd')
 
 --Problem08
---CREATE TABLE Users
---(
-	
---)
+CREATE TABLE Users
+(
+	Id INT PRIMARY KEY IDENTITY(1, 1),
+	Username VARCHAR(30) NOT NULL,
+	[Password] VARCHAR(26) NOT NULL,
+	ProfilePicture NVARCHAR(MAX),
+	LastLoginTime DATETIME2,
+	IsDeleted BIT NOT NULL
+)
+
+INSERT INTO Users
+VALUES ('Gosho', 'asdfasdfasdg', 'dss', '05-05-2020', 0),
+	   ('Gosho', 'asdfasdfasdg', 'dss', '05-05-2020', 0),
+	   ('Gosho', 'asdfasdfasdg', 'dss', '05-05-2020', 0),
+	   ('Gosho', 'asdfasdfasdg', 'dss', '05-05-2020', 0),
+	   ('Gosho', 'asdfasdfasdg', 'dss', '05-05-2020', 0)
+
+--Problem09
