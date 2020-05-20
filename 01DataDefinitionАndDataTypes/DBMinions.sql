@@ -77,3 +77,34 @@ VALUES ('Gosho', 'asdfasdfasdg', 'dss', '05-05-2020', 0),
 	   ('Gosho', 'asdfasdfasdg', 'dss', '05-05-2020', 0)
 
 --Problem09
+ALTER TABLE Users
+DROP CONSTRAINT [PK_Users]
+
+ALTER TABLE Users
+ADD CONSTRAINT PK_Users PRIMARY KEY (Id, Username)
+
+--Problem10
+ALTER TABLE Users
+ADD CHECK (LEN([Password]) >= 5)
+
+--Problem11
+ALTER TABLE Users
+ADD CONSTRAINT DF_Users_LastLoginTime 
+DEFAULT GETDATE() FOR LastLoginTime
+
+--Problem12
+ALTER TABLE Users
+DROP CONSTRAINT [PK_Users]
+
+ALTER TABLE Users
+ADD CONSTRAINT PK_Users_Id
+PRIMARY KEY (Id)
+
+TRUNCATE TABLE Users
+
+ALTER TABLE Users
+ADD CONSTRAINT CK_Username_Unique
+UNIQUE (Username)
+
+ALTER TABLE Users
+ADD CHECK (LEN(Username) >= 3)
