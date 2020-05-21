@@ -118,3 +118,13 @@ INSERT INTO Occupancies
 VALUES (1, '02-02-2002', 1, 1, 2, 123, NULL),
 	   (1, '02-02-2002', 1, 1, 2, 123, NULL),
 	   (1, '02-02-2002', 1, 1, 2, 123, NULL)
+
+--Problem23
+UPDATE Payments
+SET TaxRate *= 0.97
+
+SELECT TaxRate
+  FROM Payments
+
+--Problem24
+TRUNCATE TABLE Occupancies
