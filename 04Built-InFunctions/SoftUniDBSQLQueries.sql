@@ -23,5 +23,5 @@ SELECT FirstName, LastName
 --Problem05
 SELECT [Name]
   FROM Towns
- WHERE LEN([Name]) BETWEEN 5 AND 6
+ WHERE LEN([Name]) BETWEEN 5 AND 6 
 ORDER BY [Name]
