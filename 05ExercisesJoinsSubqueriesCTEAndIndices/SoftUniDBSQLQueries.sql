@@ -55,3 +55,18 @@ SELECT TOP (5) e.EmployeeID, e.FirstName, p.[Name]
   JOIN Projects AS p ON p.ProjectID = ep.ProjectID
  WHERE p.StartDate > '08.13.2002' AND p.EndDate IS NULL
  ORDER BY e.EmployeeID
+
+--Problem08
+SELECT e.EmployeeID, e.FirstName,
+  CASE 
+       WHEN p.StartDate > '2005-01-01' THEN NULL
+	   ELSE p.[Name]
+   END AS ProjenctName
+  FROM Employees AS e
+  INNER JOIN EmployeesProjects AS ep ON ep.EmployeeID = e.EmployeeID
+  INNER JOIN Projects AS p ON p.ProjectID = ep.ProjectID
+ WHERE e.EmployeeID = 24
+
+--Problem09
+SELECT *
+  FROM Employees
