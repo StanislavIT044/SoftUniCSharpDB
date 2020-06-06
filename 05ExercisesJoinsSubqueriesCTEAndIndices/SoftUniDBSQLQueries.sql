@@ -68,5 +68,25 @@ SELECT e.EmployeeID, e.FirstName,
  WHERE e.EmployeeID = 24
 
 --Problem09
-SELECT *
-  FROM Employees
+SELECT e.EmployeeID, e.FirstName, e.ManagerID, m.FirstName AS ManagerName
+  FROM Employees AS e
+  JOIN Employees AS m ON e.ManagerID = m.EmployeeID
+ WHERE e.ManagerID = 3 OR e.ManagerID = 7
+
+--Problem10
+SELECT TOP (50)
+		e.EmployeeID, 
+		e.FirstName + ' ' + e.LastName AS EmployeeName, 
+		m.FirstName + ' ' + m.LastName AS ManagerName,
+		d.[Name] AS DepartmentName
+  FROM Employees AS e
+  JOIN Employees AS m ON e.ManagerID = m.EmployeeID
+  JOIN Departments AS d ON e.DepartmentID = d.DepartmentID
+ ORDER BY e.EmployeeID
+
+--Problem11
+SELECT TOP(1) AVG(e.Salary) AS MinAverageSalary
+  FROM Employees AS e
+  JOIN Departments AS d ON e.DepartmentID = d.DepartmentID
+ GROUP BY d.[Name]
+ ORDER BY AVG(e.Salary)
