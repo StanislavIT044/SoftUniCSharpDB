@@ -43,5 +43,7 @@ SELECT ContinentCode, CurrencyCode, CurrencyCount AS CurrencyUsage
  ORDER BY ContinentCode 
 
 --Problem16
-SELECT * 
-  FROM MountainsCountries
+SELECT COUNT(*) AS [Count]
+  FROM Countries AS c
+  LEFT JOIN MountainsCountries AS m ON c.CountryCode = m.CountryCode
+ WHERE m.CountryCode IS NULL
