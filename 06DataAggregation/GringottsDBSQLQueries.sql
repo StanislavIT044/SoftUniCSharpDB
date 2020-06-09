@@ -65,3 +65,23 @@ SELECT DISTINCT SUBSTRING(FirstName, 1, 1) AS FirstLetter
   FROM WizzardDeposits
  WHERE DepositGroup = 'Troll Chest'
  GROUP BY FirstName
+
+--Problem11
+SELECT DepositGroup,
+	   IsDepositExpired,
+	   AVG(DepositInterest) AS AverageInterest
+	   FROM WizzardDeposits
+ WHERE DepositStartDate > '01/01/1985'
+ GROUP BY DepositGroup, IsDepositExpired
+ ORDER BY DepositGroup DESC, IsDepositExpired ASC
+
+--Problem12
+SELECT SUM([Difference])
+  FROM ( SELECT FirstName AS [Host Wizard],
+			   DepositAmount AS [Host Wizard Deposit],
+	           LEAD(FirstName) OVER(ORDER BY Id ASC) AS [Guest Wizard],
+	           LEAD(DepositAmount) OVER (ORDER BY Id ASC) AS [Guest Wizard Deposit],
+	           DepositAmount -  LEAD(DepositAmount) OVER (ORDER BY Id ASC) AS [Difference]
+          FROM WizzardDeposits
+	   ) AS [LeadQuery]
+ WHERE [Guest Wizard] IS NOT NULL
