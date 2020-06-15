@@ -61,3 +61,33 @@ INSERT INTO [LuggageTypes] VALUES
 ('Crossbody Bag'),
 ('School Backpack'),
 ('Shoulder Bag')
+
+--Problem03
+UPDATE Tickets 
+   SET Price *= 1.13
+ WHERE FlightId = (SELECT TOP(1) Id FROM Flights WHERE Destination = 'Carlsbad')
+
+--Problem04
+DELETE FROM Tickets
+ WHERE FlightId = (SELECT TOP(1) Id FROM Flights WHERE Destination = 'Ayn Halagim')
+
+--Problem05
+SELECT * 
+  FROM Planes
+ WHERE [Name] LIKE '%tr%'
+ ORDER BY Id ASC, [Name] ASC, Seats ASC, [Range] ASC
+
+--Problem06
+SELECT FlightId, SUM(Price) AS Price
+  FROM Tickets
+ GROUP BY FlightId
+ ORDER BY Price DESC
+
+--Problem07
+SELECT p.FirstName + ' ' + p.LastName AS [Full Name],
+	   f.Origin,
+	   f.Destination
+  FROM Passengers AS p
+  JOIN Tickets AS t ON t.PassengerId = p.Id
+  JOIN Flights AS f ON t.FlightId = f.Id 
+ ORDER BY [Full Name] ASC, f.Origin ASC, f.Destination ASC
