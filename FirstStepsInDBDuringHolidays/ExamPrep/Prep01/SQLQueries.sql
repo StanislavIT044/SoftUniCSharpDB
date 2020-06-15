@@ -123,3 +123,38 @@ SELECT [Name], Seats, COUNT(t.Id) AS PassengersCount
   LEFT JOIN Tickets AS t ON f.Id = t.FlightId
  GROUP BY p.[Name], p.Seats
  ORDER BY PassengersCount DESC, p.[Name] ASC, p.Seats ASC
+
+--Problem11
+CREATE FUNCTION udf_CalculateTickets
+	   (@origin VARCHAR(50), @destination VARCHAR(50), @peopleCount INT)
+RETURNS VARCHAR(100)
+AS
+BEGIN
+	IF(@peopleCount < 1)
+	BEGIN
+		RETURN 'Invalid people count!'
+	END
+	DECLARE @planeId INT = (SELECT Id
+						  FROM Flights
+						 WHERE Origin = @origin AND Destination = @destination)
+	IF(@planeId IS NULL)
+	BEGIN
+		RETURN 'Invalid flight!'
+	END
+
+	DECLARE @price DECIMAL(18, 2) = (SELECT TOP(1) SUM(Price) FROM Tickets
+									  GROUP BY FlightId
+									 HAVING FlightId = @planeId)
+	DECLARE @totalPrice DECIMAL(18, 2) = @price * @peopleCount
+									  
+	RETURN 'Total price ' + CAST(@totalPrice as VARCHAR(50));
+END
+
+--Problem12
+CREATE PROCEDURE usp_CancelFlights
+AS
+BEGIN
+	UPDATE Flights
+	SET DepartureTime = NULL, ArrivalTime = NULL
+	WHERE DepartureTime < ArrivalTime
+END
