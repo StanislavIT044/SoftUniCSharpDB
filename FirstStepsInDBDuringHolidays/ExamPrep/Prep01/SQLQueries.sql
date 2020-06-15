@@ -91,3 +91,35 @@ SELECT p.FirstName + ' ' + p.LastName AS [Full Name],
   JOIN Tickets AS t ON t.PassengerId = p.Id
   JOIN Flights AS f ON t.FlightId = f.Id 
  ORDER BY [Full Name] ASC, f.Origin ASC, f.Destination ASC
+
+--Problem08
+SELECT p.FirstName, p.LastName, p.Age
+  FROM Passengers AS p 
+  LEFT JOIN Tickets AS t ON p.Id = t.PassengerId
+ WHERE t.Id IS NULL
+ ORDER BY p.Age DESC, p.FirstName ASC, p.LastName ASC
+
+--Problem09
+SELECT p.FirstName + ' ' + p.LastName AS [Full Name],
+	   pl.[Name] AS [Plane Name],
+	   f.Origin + ' - ' + f.Destination AS [Trip],
+	   lt.[Type] AS [Luggage Type]
+  FROM Passengers AS p
+  JOIN Tickets AS t ON t.PassengerId = p.Id
+  JOIN Flights AS f ON t.FlightId = f.Id
+  JOIN Planes AS pl ON pl.Id = f.PlaneId
+  JOIN Luggages AS l ON l.Id = t.LuggageId
+  JOIN LuggageTypes AS lt ON lt.Id = l.LuggageTypeId
+ ORDER BY [Full Name] ASC, 
+		  [Name] ASC, 
+		  Origin ASC, 
+		  Destination ASC,
+		  [Luggage Type] ASC
+
+--Problem10
+SELECT [Name], Seats, COUNT(t.Id) AS PassengersCount
+  FROM Planes AS p
+  LEFT JOIN Flights AS f ON f.PlaneId = p.Id
+  LEFT JOIN Tickets AS t ON f.Id = t.FlightId
+ GROUP BY p.[Name], p.Seats
+ ORDER BY PassengersCount DESC, p.[Name] ASC, p.Seats ASC
