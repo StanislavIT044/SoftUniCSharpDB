@@ -118,3 +118,29 @@ SELECT s.[Name], AVG(ss.Grade) AS AverageGrade
   JOIN StudentsSubjects AS ss ON s.Id = ss.SubjectId
  GROUP BY s.[Name], ss.SubjectId
  ORDER BY SubjectId
+
+--Problem11
+CREATE FUNCTION udf_ExamGradesToUpdate (@studentId INT, @grade DECIMAL(15, 2))
+RETURNS NVARCHAR(MAX)
+AS
+BEGIN
+	DECLARE @studentExist INT = (SELECT TOP(1) StudentId FROM StudentsExams WHERE @studentId = StudentId);
+
+	IF @studentExist IS NULL
+	BEGIN
+		RETURN 'The student with provided id does not exist in the school!';
+	END
+
+	IF @grade > 6.00
+	BEGIN 
+		RETURN 'Grade cannot be above 6.00!';
+	END
+
+	DECLARE @countGrade INT = (SELECT SUM(Grade) FROM StudentsExams WHERE StudentId = @studentExist)
+	DECLARE @stdFirstName NVARCHAR(30)=  (SELECT FirstName FROM Students WHERE @studentId = @studentExist)
+
+	RETURN 'You have to update ' 
+			+ CAST(@countGrade AS NVARCHAR(1)) 
+			+ ' grades for the student ' 
+			+ @stdFirstName
+END
