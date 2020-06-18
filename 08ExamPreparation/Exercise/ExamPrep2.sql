@@ -96,3 +96,25 @@ SELECT FirstName + ' ' + LastName AS [Full Name]
   FULL JOIN StudentsExams AS se ON s.Id = se.StudentId
  WHERE se.Grade IS NULL
  ORDER BY [Full Name]
+
+--Problem08
+SELECT TOP(10) s.FirstName, s.LastName, FORMAT(AVG(se.Grade), 'N2') AS Grade
+  FROM Students AS s
+  JOIN StudentsExams AS se ON se.StudentId = s.Id
+ GROUP BY FirstName, LastName
+ ORDER BY Grade DESC, FirstName, LastName
+
+--Problem09
+SELECT CONCAT(s.FirstName, ' ', ISNULL(s.MiddleName + ' ', ''), s.LastName) AS [Full Name]
+  FROM Students AS s
+  LEFT JOIN StudentsSubjects AS ss ON ss.StudentId = s.Id
+  LEFT JOIN Subjects AS sb ON sb.Id = ss.SubjectId
+ WHERE ss.SubjectId IS NULL
+ ORDER BY [Full Name]
+
+--Problem10
+SELECT s.[Name], AVG(ss.Grade) AS AverageGrade
+  FROM Subjects AS s
+  JOIN StudentsSubjects AS ss ON s.Id = ss.SubjectId
+ GROUP BY s.[Name], ss.SubjectId
+ ORDER BY SubjectId
