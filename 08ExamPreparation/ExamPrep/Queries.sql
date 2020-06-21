@@ -56,6 +56,29 @@ SELECT e.FirstName + ' ' + LastName AS FullName,
   FROM Employees AS e
  ORDER BY UsersCount DESC, FullName ASC
 
+--Problem10
+SELECT ISNULL(e.FirstName + ' ' + e.LastName, 'None') AS [Employee],
+       ISNULL(d.[Name], ' None') AS Department,
+	   ISNULL(c.[Name], 'None') AS Category,
+	   r.Description,
+	   FORMAT(r.OpenDate, 'dd.MM.yyyy') AS OpenDate,
+	   s.[Label] AS Status,
+	   ISNULL(u.Name, 'None') AS [User]
+  FROM Reports AS r
+  LEFT JOIN Employees AS e ON r.EmployeeId = e.Id
+  LEFT JOIN Departments AS d ON d.Id = e.DepartmentId
+  LEFT JOIN Categories AS c ON c.Id = r.CategoryId
+  LEFT JOIN [Status] AS s ON s.Id = r.StatusId
+  LEFT JOIN Users AS u ON u.Id = r.UserId
+ ORDER BY FirstName DESC,
+		  LastName DESC,
+		  d.[Name] ASC,
+		  c.[Name] ASC,
+		  r.[Description] ASC,
+		  r.OpenDate ASC,
+		  s.[Label] ASC,
+		  u.Username ASC
+
 --Problem11
 CREATE FUNCTION udf_HoursToComplete(@StartDate DATETIME, @EndDate DATETIME)
 RETURNS INT
