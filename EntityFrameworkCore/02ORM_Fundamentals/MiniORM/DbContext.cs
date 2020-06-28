@@ -1,0 +1,7 @@
+﻿namespace MiniORM
+{
+	class DbContext
+	{
+
+	}
+}
