@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace MiniORM 
 {
-	internal class ChangeTracker<T>				//56:26
+	internal class ChangeTracker<T>				//01:07:51
 		where T : class, new()
 	{
 		private readonly List<T> allEntities;
@@ -52,20 +52,31 @@ namespace MiniORM
 				if (isModified)
 				{
 					modifiedEntities.Add(entity);
-				}
-
-				return modifiedEntities;
+				}				
 			}
+
+			return modifiedEntities;
 		}
 
-		private bool IsModified(T proxyEntity, T entity)
+		private static bool IsModified(T proxyEntity, T entity)
 		{
-			throw new NotImplementedException();
+			PropertyInfo[] monitoredProperties = typeof(T)
+				.GetProperties()
+				.Where(pi => DbContext
+								.AllowedSqlTypes
+								.Contains(pi.PropertyType))
+				.ToArray();
+
+			PropertyInfo[] modifiedProperties = monitoredProperties
+				.Where(pi => !Equals(pi.GetValue(entity), pi.GetValue(proxyEntity)))
+				.ToArray();
+
+			return modifiedProperties.Any();
 		}
 
-		private IEnumerable<object> GetPrimaryKeyValues(PropertyInfo[] primaryKeys, T proxyEntity)
+		private static IEnumerable<object> GetPrimaryKeyValues(IEnumerable<PropertyInfo> primaryKeys, T proxyEntity)
 		{
-			throw new NotImplementedException();
+			return primaryKeys.Select(pk => pk.GetValue(proxyEntity));
 		}
 
 		private static List<T> CloneEntities(IEnumerable<T> entities)
@@ -76,7 +87,7 @@ namespace MiniORM
 				.GetProperties()
 				.Where(pi => DbContext
 								.AllowedSqlTypes
-								.Contains(pi.GetType()))
+								.Contains(pi.PropertyType))
 				.ToAdrray();
 
 			foreach (T entity in entities)
