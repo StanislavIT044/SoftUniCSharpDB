@@ -87,7 +87,7 @@
 			return rows;
 		}
 
-		public IEnumerable<T> FetchResultSet<T>(string tableName, params string[] columnNames)
+		public IEnumerable<T> FetchResultSet<T>(string tableName, IEnumerable<string> columns, params string[] columnNames)
 		{
 			var rows = new List<T>();
 

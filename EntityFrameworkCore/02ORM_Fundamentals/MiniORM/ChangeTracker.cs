@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace MiniORM 
 {
-	internal class ChangeTracker<T>				//01:07:51
+	internal class ChangeTracker<T>				
 		where T : class, new()
 	{
 		private readonly List<T> allEntities;
@@ -88,7 +88,7 @@ namespace MiniORM
 				.Where(pi => DbContext
 								.AllowedSqlTypes
 								.Contains(pi.PropertyType))
-				.ToAdrray();
+				.ToArray();
 
 			foreach (T entity in entities)
 			{
