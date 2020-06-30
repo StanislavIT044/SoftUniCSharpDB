@@ -16,6 +16,7 @@ namespace SoftUni.Models
         public int ManagerId { get; set; }
 
         public virtual Employee Manager { get; set; }
+
         public virtual ICollection<Employee> Employees { get; set; }
     }
 }
