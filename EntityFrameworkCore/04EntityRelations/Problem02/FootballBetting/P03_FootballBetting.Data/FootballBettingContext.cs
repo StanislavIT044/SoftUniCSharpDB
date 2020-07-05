@@ -72,12 +72,14 @@ namespace P03_FootballBetting.Data
                 entity
                     .HasOne(t => t.PrimaryKitColor)
                     .WithMany(c => c.PrimaryKitTeams)
-                    .HasForeignKey(t => t.PrimaryKitColorId);
+                    .HasForeignKey(t => t.PrimaryKitColorId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 entity
                     .HasOne(t => t.SecondaryKitColor)
                     .WithMany(c => c.SecondaryKitTeams)
-                    .HasForeignKey(t => t.SecondaryKitColorId);
+                    .HasForeignKey(t => t.SecondaryKitColorId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
                 entity
                     .HasOne(t => t.Town)
@@ -124,6 +126,126 @@ namespace P03_FootballBetting.Data
                     .IsRequired(true)
                     .IsUnicode(false)
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Player>(entity =>
+            {
+                entity
+                    .HasKey(p => p.PlayerId);
+
+                entity
+                    .Property(p => p.Name)
+                    .IsRequired(true)
+                    .IsUnicode(true)
+                    .HasMaxLength(80);
+
+                entity
+                    .HasOne(p => p.Team)
+                    .WithMany(t => t.Players)
+                    .HasForeignKey(p => p.TeamId);
+
+                entity
+                    .HasOne(p => p.Position)
+                    .WithMany(po => po.Players)
+                    .HasForeignKey(p => p.PositionId);
+            });
+
+            modelBuilder.Entity<Position>(entity =>
+            {
+                entity
+                    .HasKey(c => c.PositionId);
+
+                entity
+                    .Property(c => c.Name)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasMaxLength(30);
+            });
+
+            modelBuilder.Entity<PlayerStatistic>(entity =>
+            {
+                entity
+                    .HasKey(ps => new { ps.PlayerId, ps.GameId });
+
+                entity
+                    .HasOne(ps => ps.Player)
+                    .WithMany(p => p.PlayerStatistics)
+                    .HasForeignKey(p => p.PlayerId);
+
+                entity
+                    .HasOne(ps => ps.Game)
+                    .WithMany(g => g.PlayerStatistics)
+                    .HasForeignKey(p => p.GameId);
+            });
+
+            modelBuilder.Entity<Game>(entity =>
+            {
+                entity
+                    .HasKey(g => g.GameId);
+
+                entity
+                    .Property(g => g.Result)
+                    .IsRequired(false)
+                    .IsUnicode(false)
+                    .HasMaxLength(7);
+
+                entity
+                    .HasOne(g => g.HomeTeam)
+                    .WithMany(t => t.HomeGames)
+                    .HasForeignKey(g => g.HomeTeamId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity
+                    .HasOne(g => g.AwayTeam)
+                    .WithMany(t => t.AwayGames)
+                    .HasForeignKey(g => g.AwayTeamId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<Bet>(entity =>
+            {
+                entity
+                    .HasKey(c => c.BetId);
+
+                entity
+                    .HasOne(b => b.User)
+                    .WithMany(u => u.Bets)
+                    .HasForeignKey(b => b.UserId);
+
+                entity
+                    .HasOne(b => b.Game)
+                    .WithMany(g => g.Bets)
+                    .HasForeignKey(b => b.GameId);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity
+                    .HasKey(c => c.UserId);
+
+                entity
+                    .Property(u => u.Username)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasMaxLength(50);
+
+                entity
+                    .Property(u => u.Password)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasMaxLength(256);
+
+                entity
+                    .Property(u => u.Email)
+                    .IsRequired(true)
+                    .IsUnicode(false)
+                    .HasMaxLength(50);
+
+                entity
+                    .Property(u => u.Name)
+                    .IsRequired(false)
+                    .IsUnicode(true)
+                    .HasMaxLength(80);
             });
         }
     }

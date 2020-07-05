@@ -1,9 +1,0 @@
-C:\Users\User\Desktop\SoftUni\SoftUniCSharpDB\EntityFrameworkCore\04EntityRelations\Problem02\FootballBetting\P03_FootballBetting.Data.Models\bin\Debug\netcoreapp3.1\P03_FootballBetting.Data.Models.deps.json
-C:\Users\User\Desktop\SoftUni\SoftUniCSharpDB\EntityFrameworkCore\04EntityRelations\Problem02\FootballBetting\P03_FootballBetting.Data.Models\bin\Debug\netcoreapp3.1\P03_FootballBetting.Data.Models.dll
-C:\Users\User\Desktop\SoftUni\SoftUniCSharpDB\EntityFrameworkCore\04EntityRelations\Problem02\FootballBetting\P03_FootballBetting.Data.Models\bin\Debug\netcoreapp3.1\P03_FootballBetting.Data.Models.pdb
-C:\Users\User\Desktop\SoftUni\SoftUniCSharpDB\EntityFrameworkCore\04EntityRelations\Problem02\FootballBetting\P03_FootballBetting.Data.Models\obj\Debug\netcoreapp3.1\P03_FootballBetting.Data.Models.csprojAssemblyReference.cache
-C:\Users\User\Desktop\SoftUni\SoftUniCSharpDB\EntityFrameworkCore\04EntityRelations\Problem02\FootballBetting\P03_FootballBetting.Data.Models\obj\Debug\netcoreapp3.1\P03_FootballBetting.Data.Models.csproj.CoreCompileInputs.cache
-C:\Users\User\Desktop\SoftUni\SoftUniCSharpDB\EntityFrameworkCore\04EntityRelations\Problem02\FootballBetting\P03_FootballBetting.Data.Models\obj\Debug\netcoreapp3.1\P03_FootballBetting.Data.Models.AssemblyInfoInputs.cache
-C:\Users\User\Desktop\SoftUni\SoftUniCSharpDB\EntityFrameworkCore\04EntityRelations\Problem02\FootballBetting\P03_FootballBetting.Data.Models\obj\Debug\netcoreapp3.1\P03_FootballBetting.Data.Models.AssemblyInfo.cs
-C:\Users\User\Desktop\SoftUni\SoftUniCSharpDB\EntityFrameworkCore\04EntityRelations\Problem02\FootballBetting\P03_FootballBetting.Data.Models\obj\Debug\netcoreapp3.1\P03_FootballBetting.Data.Models.dll
-C:\Users\User\Desktop\SoftUni\SoftUniCSharpDB\EntityFrameworkCore\04EntityRelations\Problem02\FootballBetting\P03_FootballBetting.Data.Models\obj\Debug\netcoreapp3.1\P03_FootballBetting.Data.Models.pdb
