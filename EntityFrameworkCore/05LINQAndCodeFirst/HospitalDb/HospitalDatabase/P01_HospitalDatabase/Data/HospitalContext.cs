@@ -51,5 +51,7 @@ namespace P01_HospitalDatabase.Data
         public DbSet<Visitation> Visitations { get; set; }
 
         public DbSet<PatientMedicament> PatientMedicaments { get; set; }
+
+        public DbSet<Doctor> Doctors { get; set; }
     }
 }

@@ -18,5 +18,9 @@ namespace P01_HospitalDatabase.Data.Models
         [Required, ForeignKey("Patient")]
         public int PatientId { get; set; }
         public virtual Patient Patient { get; set; }
+
+        [Required, ForeignKey("Doctor")]
+        public int DoctorId { get; set; }
+        public virtual Doctor Doctor { get; set; }
     }
 }
