@@ -1,5 +1,6 @@
 ﻿namespace BookShop
 {
+    using BookShop.Models;
     using Data;
     using Initializer;
     using System;
@@ -16,19 +17,25 @@
             
             var db = new BookShopContext();
 
-            int input = int.Parse(Console.ReadLine());
+            string input = Console.ReadLine();
 
             //Problem01
-            //GetBooksByAgeRestriction(db, input); 
+            //Console.ReadLine(GetBooksByAgeRestriction(db, input)); 
 
             //Problem02
-            //GetGoldenBooks(db);
+            //Console.ReadLine(GetGoldenBooks(db));
 
             //Problem03
-            //GetBooksByPrice(db);
+            //Console.ReadLine(GetBooksByPrice(db));
 
             //Problem04
-            GetBooksNotReleasedIn(db, input);
+            //Console.ReadLine(GetBooksNotReleasedIn(db, input));
+
+            //Problem05
+            //Console.WriteLine(GetBooksByCategory(db, input));
+
+            //Problem06
+            Console.WriteLine(GetBooksReleasedBefore(db, input));
         }
 
         //Problem01
@@ -102,13 +109,73 @@
         {
             List<string> books = context
                 .Books
-                .Where(b => b.Copies < 5000 &&
-                            b.EditionType == Models.Enums.EditionType.Gold)
+                .Where(b => b.ReleaseDate.Value.Year != year)
                 .OrderBy(b => b.BookId)
                 .Select(b => b.Title)
                 .ToList();
 
-            return null;
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var book in books)
+            {
+                sb.AppendLine($"{book}");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
+
+        //Problem05
+        public static string GetBooksByCategory(BookShopContext context, string input)
+        {
+            List<string> categories = input
+                .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x.ToLower())
+                .ToList();
+
+            List<string> books = context
+                    .BooksCategories
+                    .Where(b => categories.Contains(b.Category.Name.ToLower()))
+                    .OrderBy(b => b.Book.Title)
+                    .Select(b => b.Book.Title)
+                    .ToList();
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var book in books)
+            {
+                sb.AppendLine($"{book}");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
+
+        //Problem06
+        public static string GetBooksReleasedBefore(BookShopContext context, string date)
+        {
+            DateTime dateTime = DateTime.ParseExact(date, "dd-MM-yyyy", null);
+
+            var books = context
+                .Books
+                .Where(b => b.ReleaseDate < dateTime)
+                .Select(b =>
+                new 
+                {
+                    b.Title,
+                    b.EditionType,
+                    b.Price,
+                    b.ReleaseDate
+                })
+                .OrderByDescending(b => b.ReleaseDate)
+                .ToList();
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var book in books)
+            {
+                sb.AppendLine($"{book.Title} - {book.EditionType} - ${book.Price}");
+            }
+
+            return sb.ToString().TrimEnd();
         }
     }
 }
