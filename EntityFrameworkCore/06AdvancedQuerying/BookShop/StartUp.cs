@@ -16,7 +16,7 @@
             
             var db = new BookShopContext();
 
-            //string input = Console.ReadLine();
+            int input = int.Parse(Console.ReadLine());
 
             //Problem01
             //GetBooksByAgeRestriction(db, input); 
@@ -25,7 +25,10 @@
             //GetGoldenBooks(db);
 
             //Problem03
-            GetBooksByPrice(db);
+            //GetBooksByPrice(db);
+
+            //Problem04
+            GetBooksNotReleasedIn(db, input);
         }
 
         //Problem01
@@ -92,6 +95,20 @@
             }
 
             return sb.ToString().TrimEnd();
+        }
+
+        //Problem04
+        public static string GetBooksNotReleasedIn(BookShopContext context, int year)
+        {
+            List<string> books = context
+                .Books
+                .Where(b => b.Copies < 5000 &&
+                            b.EditionType == Models.Enums.EditionType.Gold)
+                .OrderBy(b => b.BookId)
+                .Select(b => b.Title)
+                .ToList();
+
+            return null;
         }
     }
 }
