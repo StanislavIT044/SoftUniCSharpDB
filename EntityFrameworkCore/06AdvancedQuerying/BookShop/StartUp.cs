@@ -17,7 +17,7 @@
             
             var db = new BookShopContext();
 
-            string input = Console.ReadLine();
+            //string input = Console.ReadLine();
 
             //Problem01
             //Console.ReadLine(GetBooksByAgeRestriction(db, input)); 
@@ -35,7 +35,22 @@
             //Console.WriteLine(GetBooksByCategory(db, input));
 
             //Problem06
-            Console.WriteLine(GetBooksReleasedBefore(db, input));
+            //Console.WriteLine(GetBooksReleasedBefore(db, input));
+
+            //Problem07
+            //Console.WriteLine(GetAuthorNamesEndingIn(db, input));
+
+            //Problem08
+            //Console.WriteLine(GetBookTitlesContaining(db, input));
+
+            //Problem09
+            //Console.WriteLine(GetBooksByAuthor(db, input));
+
+            //Problem10
+            //Console.WriteLine(CountBooks(db, input));
+
+            //Problem11
+            //Console.WriteLine(CountCopiesByAuthor(db));
         }
 
         //Problem01
@@ -172,10 +187,112 @@
 
             foreach (var book in books)
             {
-                sb.AppendLine($"{book.Title} - {book.EditionType} - ${book.Price}");
+                sb.AppendLine($"{book.Title} - {book.EditionType} - ${book.Price:f2}");
             }
 
             return sb.ToString().TrimEnd();
         }
+
+        //Problem07
+        public static string GetAuthorNamesEndingIn(BookShopContext context, string input) // 25/100
+        {
+            var authors = context
+                .Books
+                .Where(b => b.Author.FirstName.ToLower().EndsWith(input.ToLower()))
+                .Select(b => new {  Name = b.Author.FirstName + " " + b.Author.LastName })
+                .OrderBy(b => b.Name)
+                .Distinct()
+                .ToList();
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var author in authors)
+            {
+                sb.AppendLine($"{author.Name}");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
+
+        //Problem08
+        public static string GetBookTitlesContaining(BookShopContext context, string input)
+        {
+            List<string> books = context
+                .Books
+                .Where(b => b.Title.ToLower().Contains(input.ToLower()))
+                .Select(b => b.Title)
+                .OrderBy(b => b)
+                .ToList();
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var book in books)
+            {
+                sb.AppendLine($"{book}");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
+
+        //Problem09
+        public static string GetBooksByAuthor(BookShopContext context, string input)
+        {
+            var books = context
+                .Books
+                .Where(b => b.Author.LastName.ToLower().StartsWith(input.ToLower()))
+                .Select(b => 
+                new 
+                {
+                    b.BookId,
+                    b.Title,
+                    b.Author.FirstName,
+                    b.Author.LastName
+                })
+                .OrderBy(b => b.BookId)
+                .ToList();
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var book in books)
+            {
+                sb.AppendLine($"{book.Title} ({book.FirstName} {book.LastName})");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
+
+        //Problem10
+        public static int CountBooks(BookShopContext context, int lengthCheck)
+        {
+            int booksCount = context
+                .Books
+                .Where(b => b.Title.Length > lengthCheck)
+                .Count();
+
+            return booksCount;
+        }
+
+        //Problem10
+        //public static string CountCopiesByAuthor(BookShopContext context)
+        //{
+        //    var authors = context
+        //        .Authors
+        //        .Select(a =>
+        //        new
+        //        {
+        //            AuthorName = a.FirstName + " " + a.LastName,
+        //            Copies = a.Books
+        //        })
+        //        .OrderBy(a => a.AuthorName)
+
+        //    StringBuilder sb = new StringBuilder();
+
+        //    foreach (var book in books)
+        //    {
+        //        sb.AppendLine($"{book.Key} - {book.Copies}");
+        //    }
+
+        //    return sb.ToString().TrimEnd();
+        //}
     }
 }
