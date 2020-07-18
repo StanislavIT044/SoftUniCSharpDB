@@ -23,6 +23,10 @@ namespace ProductShop
             //Problem02
             //string inputJson = File.ReadAllText("../../../Datasets/products.json");
             //Console.WriteLine(ImportProducts(db, inputJson));
+
+            //Problem03
+            string inputJson = File.ReadAllText("../../../Datasets/categories.json");
+            Console.WriteLine(ImportCategories(db, inputJson));
         }
 
         private static void ResetDatabase(ProductShopContext db)
@@ -56,10 +60,17 @@ namespace ProductShop
             return $"Successfully imported {products.Count}";
         }
 
-        //Problem03
+        //Problem03     
         public static string ImportCategories(ProductShopContext context, string inputJson)
         {
+            List<Category> categories = JsonConvert.DeserializeObject<List<Category>>(inputJson)
+                .Where(c => c.Name != null)
+                .ToList();
 
-        }
+            context.Categories.AddRange(categories);
+            context.SaveChanges();
+
+            return $"Successfully imported {categories.Count}";
+        }//TODO: Run!
     }
 }
