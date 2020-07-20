@@ -18,7 +18,7 @@ namespace CarDealer
         {
             CarDealerContext db = new CarDealerContext();
 
-            //ResetDb(db);
+            ResetDb(db);
 
             //Problem09
             //string inputJson = File.ReadAllText(directoryPath + "/suppliers.json");
@@ -29,8 +29,16 @@ namespace CarDealer
             //Console.WriteLine(ImportParts(db, inputJson));
 
             //Problem11
-            string inputJson = File.ReadAllText(directoryPath + "/cars.json");
-            Console.WriteLine(ImportCars(db, inputJson));
+            //string inputJson = File.ReadAllText(directoryPath + "/cars.json");
+            //Console.WriteLine(ImportCars(db, inputJson));
+
+            //Problem12
+            //string inputJson = File.ReadAllText(directoryPath + "/customers.json");
+            //Console.WriteLine(ImportCustomers(db, inputJson));
+
+            //Problem13
+            //string inputJson = File.ReadAllText(directoryPath + "/sales.json");
+            //Console.WriteLine(ImportSales(db, inputJson));
         }
 
         private static void ResetDb(CarDealerContext db)
@@ -114,6 +122,29 @@ namespace CarDealer
             context.SaveChanges();
 
             return $"Successfully imported {cars.Count}.";
+        }
+
+        //Problem12
+        public static string ImportCustomers(CarDealerContext context, string inputJson)
+        {
+            List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(inputJson);
+
+            context.Customers.AddRange(customers);
+            context.SaveChanges();
+
+            return $"Successfully imported {customers.Count}.";
+        }
+
+        //Problem13
+        public static string ImportSales(CarDealerContext context, string inputJson)
+        {
+            List<Sale> sales = JsonConvert.DeserializeObject<List<Sale>>(inputJson,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore});
+
+            context.Sales.AddRange(sales);
+            context.SaveChanges();
+
+            return $"Successfully imported {sales.Count}.";
         }
     }
 }
