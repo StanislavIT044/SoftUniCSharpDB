@@ -12,13 +12,13 @@ namespace CarDealer
 {
     public class StartUp
     {
-        const string directoryPath = "../../../Datasets";
+        const string DirectoryPath = "../../../Datasets/Results";
 
         public static void Main()
         {
             CarDealerContext db = new CarDealerContext();
 
-            ResetDb(db);
+            //ResetDb(db);
 
             //Problem09
             //string inputJson = File.ReadAllText(directoryPath + "/suppliers.json");
@@ -39,6 +39,30 @@ namespace CarDealer
             //Problem13
             //string inputJson = File.ReadAllText(directoryPath + "/sales.json");
             //Console.WriteLine(ImportSales(db, inputJson));
+
+            //Problem14
+            //WriteInFile(GetOrderedCustomers(db), "ordered-customers.json");
+            //Console.WriteLine(GetOrderedCustomers(db));
+
+            //Problem15
+            //WriteInFile(GetCarsFromMakeToyota(db), "toyota-cars.json");
+            //Console.WriteLine(GetCarsFromMakeToyota(db));
+
+            //Problem16
+            //WriteInFile(GetLocalSuppliers(db), "local-suppliers.json");
+            //Console.WriteLine(GetLocalSuppliers(db));
+
+            //Problem17
+            //WriteInFile(GetCarsWithTheirListOfParts(db), "cars-and-parts.json");
+            //Console.WriteLine(GetCarsWithTheirListOfParts(db));
+
+            //Problem18
+            //WriteInFile(GetTotalSalesByCustomer(db), "customers-total-sales.json");
+            //Console.WriteLine(GetTotalSalesByCustomer(db));
+
+            //Problem19
+            //WriteInFile(GetSalesWithAppliedDiscount(db), "sales-discounts.json");
+            //Console.WriteLine(GetSalesWithAppliedDiscount(db));
         }
 
         private static void ResetDb(CarDealerContext db)
@@ -52,12 +76,12 @@ namespace CarDealer
 
         private static void WriteInFile(string json, string fileName)
         {
-            if (!Directory.Exists(directoryPath))
+            if (!Directory.Exists(DirectoryPath))
             {
-                Directory.CreateDirectory(directoryPath);
+                Directory.CreateDirectory(DirectoryPath);
             }
 
-            File.WriteAllText(directoryPath + "/" + fileName, json);
+            File.WriteAllText(DirectoryPath + "/" + fileName, json);
         }
 
         //Problem09
@@ -145,6 +169,141 @@ namespace CarDealer
             context.SaveChanges();
 
             return $"Successfully imported {sales.Count}.";
+        }
+
+        //Problem14
+        public static string GetOrderedCustomers(CarDealerContext context)
+        {
+            var customers = context
+                .Customers
+                .OrderBy(c => c.BirthDate)
+                .ThenBy(c => c.IsYoungDriver)
+                .Select(c => new
+                {
+                    Name = c.Name,
+                    BirthDate = c.BirthDate.ToString("dd/MM/yyyy"),
+                    IsYoungDriver = c.IsYoungDriver
+                })
+                .ToList();
+
+            string json = JsonConvert.SerializeObject(customers, Formatting.Indented);
+
+            return json;
+        }
+
+        //Problem15
+        public static string GetCarsFromMakeToyota(CarDealerContext context)
+        {
+            var cars = context
+                .Cars
+                .Where(c => c.Make == "Toyota")
+                .OrderBy(c => c.Model)
+                .ThenByDescending(c => c.TravelledDistance)
+                .Select(c => new
+                {
+                    Id = c.Id,
+                    Make = c.Make,
+                    Model = c.Model,
+                    TravelledDistance = c.TravelledDistance
+                })
+                .ToList();
+
+            string json = JsonConvert.SerializeObject(cars, Formatting.Indented);
+
+            return json;
+        }
+
+        //Problem16
+        public static string GetLocalSuppliers(CarDealerContext context)
+        {
+            var suppliers = context
+                .Suppliers
+                .Where(s => s.IsImporter == false)
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    PartsCount = s.Parts.Count
+                })
+                .ToList();
+
+            string json = JsonConvert.SerializeObject(suppliers, Formatting.Indented);
+
+            return json;
+        }
+
+        //Problem17
+        public static string GetCarsWithTheirListOfParts(CarDealerContext context)
+        {
+            var cars = context
+                .Cars
+                .Select(c => new
+                {
+                    car = new
+                    {
+                        Make = c.Make,
+                        Model = c.Model,
+                        TravelledDistance = c.TravelledDistance
+                    },
+                    parts = c.PartCars
+                    .Select(p => new
+                    {
+                        Name = p.Part.Name,
+                        Price = p.Part.Price.ToString("F")
+                    })
+                    .ToList()
+                })
+                .ToList();
+
+            string json = JsonConvert.SerializeObject(cars, Formatting.Indented);
+
+            return json;
+        }
+
+        //Problem18
+        public static string GetTotalSalesByCustomer(CarDealerContext context)
+        {
+            var customers = context
+                .Customers
+                .Select(c => new
+                {
+                    fullName = c.Name,
+                    boughtCars = c.Sales.Count,
+                    spentMoney = c.Sales.Sum(s => s.Car.PartCars.Sum(p => p.Part.Price))
+                })
+                .OrderByDescending(c => c.spentMoney)
+                .ThenByDescending(c => c.boughtCars)
+                .ToList();
+
+            string json = JsonConvert.SerializeObject(customers, Formatting.Indented);
+
+            return json;
+        }
+
+        //Problem19
+        public static string GetSalesWithAppliedDiscount(CarDealerContext context)
+        {
+            var sales = context
+                .Sales
+                .Take(10)
+                .Select(s => new
+                {
+                    car = new
+                    {
+                        Make = s.Car.Make,
+                        Model = s.Car.Model,
+                        TravelledDistance = s.Car.TravelledDistance
+                    },
+                    customerName = s.Customer.Name,
+                    Discount = s.Discount.ToString("F"),
+                    price = s.Car.PartCars.Sum(x => x.Part.Price).ToString("F"),
+                    priceWithDiscount = (s.Car.PartCars.Sum(x => x.Part.Price) * (1M - s.Discount / 100M)).ToString("F")
+                })
+                .ToList();
+
+            string json = JsonConvert.SerializeObject(sales, Formatting.Indented);
+
+            return json;
         }
     }
 }
