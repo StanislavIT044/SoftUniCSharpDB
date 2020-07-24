@@ -3,6 +3,7 @@
     using Microsoft.EntityFrameworkCore;
 
     using Models;
+    using System;
 
     public class CarDealerContext : DbContext
     {

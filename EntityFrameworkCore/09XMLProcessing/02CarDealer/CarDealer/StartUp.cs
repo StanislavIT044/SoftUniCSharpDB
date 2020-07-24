@@ -4,11 +4,14 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text;
+    using System.Text.Unicode;
     using System.Xml;
     using System.Xml.Serialization;
     using CarDealer.Data;
     using CarDealer.DataTransferObjects;
     using CarDealer.Dtos.Import;
+    using CarDealer.Dtos.Import.Export;
     using CarDealer.Models;
     using Microsoft.EntityFrameworkCore.Internal;
 
@@ -41,6 +44,9 @@
             //Problem13
             //string inputXml = File.ReadAllText(DirectoryPath + "sales.xml");
             //Console.WriteLine(ImportSales(db, inputXml));
+
+            //Problem14
+            Console.WriteLine(GetCarsWithDistance(db));
         }
 
         private static void ResetDb(CarDealerContext context)
@@ -207,6 +213,40 @@
             context.SaveChanges();
 
             return $"Successfully imported {sales.Count}";
+        }
+
+        //Problem14
+        public static string GetCarsWithDistance(CarDealerContext context) //TODO: Repair encoding
+        {
+            string rootName = "cars";
+
+            StringBuilder sb = new StringBuilder();
+
+            List<ExportCarDto> carsToExport = context
+                .Cars
+                .Where(c => c.TravelledDistance > 2000000)
+                .OrderBy(c => c.Make)
+                .ThenBy(c => c.Model)
+                .Select(x => new ExportCarDto
+                {
+                    Make = x.Make,
+                    Model = x.Model,
+                    TravelledDistance = x.TravelledDistance
+                })
+                .Take(10)
+                .ToList();
+
+            XmlSerializer serilizer = new XmlSerializer(typeof(List<ExportCarDto>),
+                                      new XmlRootAttribute(rootName));
+
+            XmlSerializerNamespaces xmlNamespaces = new XmlSerializerNamespaces();
+            xmlNamespaces.Add(string.Empty, string.Empty);
+
+            StringWriter writer = new StringWriter(sb);
+
+            serilizer.Serialize(writer, carsToExport, xmlNamespaces);
+
+            return sb.ToString();
         }
     }
 }
