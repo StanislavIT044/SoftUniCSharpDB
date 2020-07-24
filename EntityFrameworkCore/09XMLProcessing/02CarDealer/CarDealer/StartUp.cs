@@ -10,10 +10,12 @@
     using System.Xml.Serialization;
     using CarDealer.Data;
     using CarDealer.DataTransferObjects;
+    using CarDealer.Dtos.Export;
     using CarDealer.Dtos.Import;
     using CarDealer.Dtos.Import.Export;
     using CarDealer.Models;
     using Microsoft.EntityFrameworkCore.Internal;
+    using ProductShop.XMLHelper;
 
     public class StartUp
     {
@@ -46,7 +48,10 @@
             //Console.WriteLine(ImportSales(db, inputXml));
 
             //Problem14
-            Console.WriteLine(GetCarsWithDistance(db));
+            //Console.WriteLine(GetCarsWithDistance(db));
+
+            //Problem15
+            Console.WriteLine(GetCarsFromMakeBmw(db));
         }
 
         private static void ResetDb(CarDealerContext context)
@@ -216,7 +221,7 @@
         }
 
         //Problem14
-        public static string GetCarsWithDistance(CarDealerContext context) //TODO: Repair encoding
+        public static string GetCarsWithDistance(CarDealerContext context) 
         {
             string rootName = "cars";
 
@@ -242,11 +247,34 @@
             XmlSerializerNamespaces xmlNamespaces = new XmlSerializerNamespaces();
             xmlNamespaces.Add(string.Empty, string.Empty);
 
-            StringWriter writer = new StringWriter(sb);
+            serilizer.Serialize(new StringWriter(sb), carsToExport, xmlNamespaces);
 
-            serilizer.Serialize(writer, carsToExport, xmlNamespaces);
+            return sb.ToString().TrimEnd();
+        }
 
-            return sb.ToString();
+        //Problem15
+        public static string GetCarsFromMakeBmw(CarDealerContext context)
+        {
+            string rootElement = "car";
+
+            StringBuilder sb = new StringBuilder();
+
+            List<ExportCarBMWDto> cars = context
+                .Cars
+                .Where(c => c.Make == "BMW")
+                .OrderBy(c => c.Model)
+                .ThenByDescending(c => c.TravelledDistance)
+                .Select(c => new ExportCarBMWDto
+                {
+                    Id = c.Id,
+                    Model = c.Model,
+                    TravelledDistance = c.TravelledDistance
+                })
+                .ToList();
+
+            string xml = XMLConverter.Serialize(cars, rootElement);
+
+            return xml;
         }
     }
 }
