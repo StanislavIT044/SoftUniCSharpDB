@@ -1,4 +1,4 @@
-﻿namespace ProductShop.XMLHelper
+﻿namespace CarDealer.XMLHelper
 {
     using System.IO;
     using System.Text;

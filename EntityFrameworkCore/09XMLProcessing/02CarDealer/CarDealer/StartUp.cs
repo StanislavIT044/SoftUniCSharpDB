@@ -14,8 +14,8 @@
     using CarDealer.Dtos.Import;
     using CarDealer.Dtos.Import.Export;
     using CarDealer.Models;
+    using CarDealer.XMLHelper;
     using Microsoft.EntityFrameworkCore.Internal;
-    using ProductShop.XMLHelper;
 
     public class StartUp
     {
@@ -51,7 +51,10 @@
             //Console.WriteLine(GetCarsWithDistance(db));
 
             //Problem15
-            Console.WriteLine(GetCarsFromMakeBmw(db));
+            //Console.WriteLine(GetCarsFromMakeBmw(db));
+
+            //Problem16
+            Console.WriteLine(GetLocalSuppliers(db));
         }
 
         private static void ResetDb(CarDealerContext context)
@@ -221,17 +224,14 @@
         }
 
         //Problem14
-        public static string GetCarsWithDistance(CarDealerContext context) 
+        public static string GetCarsWithDistance(CarDealerContext context) // TODO: Repair 0/100 
         {
             string rootName = "cars";
 
-            StringBuilder sb = new StringBuilder();
-
-            List<ExportCarDto> carsToExport = context
-                .Cars
-                .Where(c => c.TravelledDistance > 2000000)
-                .OrderBy(c => c.Make)
-                .ThenBy(c => c.Model)
+            var targetCars = context.Cars
+                .Where(x => x.TravelledDistance > 2000000)
+                .OrderBy(x => x.Make)
+                .ThenBy(x => x.Model)
                 .Select(x => new ExportCarDto
                 {
                     Make = x.Make,
@@ -241,29 +241,23 @@
                 .Take(10)
                 .ToList();
 
-            XmlSerializer serilizer = new XmlSerializer(typeof(List<ExportCarDto>),
-                                      new XmlRootAttribute(rootName));
+            var carsXmlResult = XMLConverter.Serialize(targetCars, rootName);
 
-            XmlSerializerNamespaces xmlNamespaces = new XmlSerializerNamespaces();
-            xmlNamespaces.Add(string.Empty, string.Empty);
-
-            serilizer.Serialize(new StringWriter(sb), carsToExport, xmlNamespaces);
-
-            return sb.ToString().TrimEnd();
+            return carsXmlResult;
         }
 
         //Problem15
         public static string GetCarsFromMakeBmw(CarDealerContext context)
         {
-            string rootElement = "car";
+            string rootElement = "cars";
 
             StringBuilder sb = new StringBuilder();
 
             List<ExportCarBMWDto> cars = context
                 .Cars
-                .Where(c => c.Make == "BMW")
-                .OrderBy(c => c.Model)
-                .ThenByDescending(c => c.TravelledDistance)
+                .Where(x => x.Make.ToLower() == "bmw")
+                .OrderBy(x => x.Model)
+                .ThenByDescending(x => x.TravelledDistance)
                 .Select(c => new ExportCarBMWDto
                 {
                     Id = c.Id,
@@ -273,6 +267,27 @@
                 .ToList();
 
             string xml = XMLConverter.Serialize(cars, rootElement);
+
+            return xml;
+        }
+
+        //Problem16
+        public static string GetLocalSuppliers(CarDealerContext context)
+        {
+            string rootName = "suppliers";
+
+            List<ExportLocalSupplierDto> suppliers = context
+                .Suppliers
+                .Where(s => !s.IsImporter)
+                .Select(s => new ExportLocalSupplierDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    PartsCount = s.Parts.Count
+                })
+                .ToList();
+
+            string xml = XMLConverter.Serialize(suppliers, rootName);
 
             return xml;
         }
