@@ -10,6 +10,7 @@
     using System.Xml.Serialization;
     using CarDealer.Data;
     using CarDealer.DataTransferObjects;
+    using CarDealer.DataTransferObjects.ExportDtos;
     using CarDealer.Dtos.Export;
     using CarDealer.Dtos.Import;
     using CarDealer.Dtos.Import.Export;
@@ -49,12 +50,27 @@
 
             //Problem14
             //Console.WriteLine(GetCarsWithDistance(db));
+            //WriteInFile((GetCarsWithDistance(db), "cars.xml")
 
             //Problem15
             //Console.WriteLine(GetCarsFromMakeBmw(db));
+            //WriteInFile(GetCarsFromMakeBmw(db), "bmw-cars.xml");
 
             //Problem16
-            Console.WriteLine(GetLocalSuppliers(db));
+            //Console.WriteLine(GetLocalSuppliers(db));
+            //WriteInFile(GetLocalSuppliers(db), "local-suppliers.xml");
+
+            //Problem17
+            //Console.WriteLine(GetCarsWithTheirListOfParts(db));
+            //WriteInFile(GetCarsWithTheirListOfParts(db), "cars-and-parts.xml");
+
+            //Problem18
+            //Console.WriteLine(GetCarsWithTheirListOfParts(db));
+            //WriteInFile(GetCarsWithTheirListOfParts(db), "customers-total-sales.xml");
+
+            //Problem19
+            //Console.WriteLine(GetSalesWithAppliedDiscount(db));
+            //WriteInFile(GetSalesWithAppliedDiscount(db), "sales-discounts.xml");
         }
 
         private static void ResetDb(CarDealerContext context)
@@ -64,6 +80,11 @@
 
             context.Database.EnsureCreated();
             Console.WriteLine("Database was created!");
+        }
+
+        private static void WriteInFile(string xml, string fileName)
+        {
+            File.WriteAllText("../../../ExportsXMLs/" + fileName, xml);
         }
 
         //Problem09
@@ -224,11 +245,11 @@
         }
 
         //Problem14
-        public static string GetCarsWithDistance(CarDealerContext context) // TODO: Repair 0/100 
+        public static string GetCarsWithDistance(CarDealerContext context) // TODO: Repair (0/100) 
         {
             string rootName = "cars";
 
-            var targetCars = context.Cars
+            List<ExportCarDto> cars = context.Cars
                 .Where(x => x.TravelledDistance > 2000000)
                 .OrderBy(x => x.Make)
                 .ThenBy(x => x.Model)
@@ -241,9 +262,9 @@
                 .Take(10)
                 .ToList();
 
-            var carsXmlResult = XMLConverter.Serialize(targetCars, rootName);
+            string xml = XMLConverter.Serialize(cars, rootName);
 
-            return carsXmlResult;
+            return xml;
         }
 
         //Problem15
@@ -290,6 +311,112 @@
             string xml = XMLConverter.Serialize(suppliers, rootName);
 
             return xml;
+        }
+
+        //Problem17
+        public static string GetCarsWithTheirListOfParts(CarDealerContext context)
+        {
+            string rootName = "cars";
+
+            StringWriter sw = new StringWriter();
+
+            List<ExportCarsWithPartsDto> exportCarsWithPartsDtos = context
+                .Cars
+                .Select(c => new ExportCarsWithPartsDto
+                {
+                    Make = c.Make,
+                    Model = c.Model,
+                    TravelledDistance = c.TravelledDistance,
+                    Parts = c.PartCars
+                    .Select(pc => new CarPart 
+                    { 
+                        Name = pc.Part.Name, 
+                        Price = pc.Part.Price 
+                    })
+                    .OrderByDescending(pc => pc.Price)
+                    .ToList()
+                })
+                .OrderByDescending(c => c.TravelledDistance)
+                .ThenBy(c => c.Model)
+                .Take(5)
+                .ToList();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<ExportCarsWithPartsDto>),
+                                       new XmlRootAttribute(rootName));
+
+            XmlSerializerNamespaces xmlNamespaces = new XmlSerializerNamespaces();
+            xmlNamespaces.Add(string.Empty, string.Empty);
+
+            serializer.Serialize(sw, exportCarsWithPartsDtos, xmlNamespaces);
+
+            return sw.ToString();
+        }
+
+        //Problem18
+        public static string GetTotalSalesByCustomer(CarDealerContext context)
+        {
+            string rootName = "customers";
+
+            StringWriter sw = new StringWriter();
+
+            List<ExportCustomersDto> exportCustomers = context
+                .Sales
+                .Where(s => s.Customer
+                    .Sales
+                    .Any())
+                .Select(s => new ExportCustomersDto
+                {
+                    FullName = s.Customer.Name,
+                    BoughtCarsCount = s.Customer.Sales.Count,
+                    SpentMoney = s.Car.PartCars.Sum(pc => pc.Part.Price)
+                })
+                .OrderByDescending(x => x.SpentMoney)
+                .ToList();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<ExportCustomersDto>),
+                                       new XmlRootAttribute(rootName));
+
+            XmlSerializerNamespaces xmlNamespaces = new XmlSerializerNamespaces();
+            xmlNamespaces.Add(string.Empty, string.Empty);
+
+            serializer.Serialize(sw, exportCustomers, xmlNamespaces);
+
+            return sw.ToString();
+        }
+
+        //Problem19
+        public static string GetSalesWithAppliedDiscount(CarDealerContext context)
+        {
+            string rootName = "sales";
+
+            StringWriter sw = new StringWriter();
+
+            List<ExportSaleInfoDto> sales = context
+                .Sales
+                .Select(s => new ExportSaleInfoDto
+                {
+                    Car = new CarInfo
+                    {
+                        Make = s.Car.Make,
+                        Model = s.Car.Model,
+                        TravelledDistance = s.Car.TravelledDistance
+                    },
+                    Discount = s.Discount,
+                    CustomerName = s.Customer.Name,
+                    Price = s.Car.PartCars.Sum(pc => pc.Part.Price),
+                    PriceWithDiscount = s.Car.PartCars.Sum(pc => pc.Part.Price) - s.Car.PartCars.Sum(pc => pc.Part.Price) * s.Discount / 100.0M
+                })
+                .ToList();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(List<ExportSaleInfoDto>),
+                                       new XmlRootAttribute(rootName));
+
+            XmlSerializerNamespaces xmlNamespaces = new XmlSerializerNamespaces();
+            xmlNamespaces.Add(string.Empty, string.Empty);
+
+            serializer.Serialize(sw, sales, xmlNamespaces);
+
+            return sw.ToString();
         }
     }
 }
