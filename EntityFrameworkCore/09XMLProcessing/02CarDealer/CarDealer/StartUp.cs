@@ -49,7 +49,7 @@
             //Console.WriteLine(ImportSales(db, inputXml));
 
             //Problem14
-            //Console.WriteLine(GetCarsWithDistance(db));
+            Console.WriteLine(GetCarsWithDistance(db));
             //WriteInFile((GetCarsWithDistance(db), "cars.xml")
 
             //Problem15
@@ -251,14 +251,14 @@
 
             List<ExportCarDto> cars = context.Cars
                 .Where(x => x.TravelledDistance > 2000000)
-                .OrderBy(x => x.Make)
-                .ThenBy(x => x.Model)
                 .Select(x => new ExportCarDto
                 {
                     Make = x.Make,
                     Model = x.Model,
                     TravelledDistance = x.TravelledDistance
                 })
+                .OrderBy(x => x.Make)
+                .ThenBy(x => x.Model)
                 .Take(10)
                 .ToList();
 

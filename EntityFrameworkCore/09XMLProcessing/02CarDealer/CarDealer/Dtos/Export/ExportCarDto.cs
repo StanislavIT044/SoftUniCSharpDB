@@ -8,7 +8,7 @@
         [XmlElement("make")]
         public string Make { get; set; }
 
-        [XmlElement("Model")]
+        [XmlElement("model")]
         public string Model { get; set; }
 
         [XmlElement("travelled-distance")]
