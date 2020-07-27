@@ -49,7 +49,7 @@
             //Console.WriteLine(ImportSales(db, inputXml));
 
             //Problem14
-            Console.WriteLine(GetCarsWithDistance(db));
+            //Console.WriteLine(GetCarsWithDistance(db));
             //WriteInFile((GetCarsWithDistance(db), "cars.xml")
 
             //Problem15
@@ -245,7 +245,7 @@
         }
 
         //Problem14
-        public static string GetCarsWithDistance(CarDealerContext context) // TODO: Repair (0/100) 
+        public static string GetCarsWithDistance(CarDealerContext context)
         {
             string rootName = "cars";
 
