@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using BookShop.Data.Models.Enums;
+    using Newtonsoft.Json;
 
     public class Book
     {
@@ -30,6 +31,7 @@
 
         public DateTime PublishedOn  { get; set; }
 
+        [JsonIgnore]
         public ICollection<AuthorBook> AuthorsBooks { get; set; }
     }
 }

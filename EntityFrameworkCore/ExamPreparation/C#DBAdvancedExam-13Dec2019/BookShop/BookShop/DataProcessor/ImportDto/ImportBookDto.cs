@@ -1,9 +1,7 @@
 ﻿namespace BookShop.DataProcessor.ImportDto
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Xml.Serialization;
-    using BookShop.Data.Models.Enums;
 
     [XmlType("Book")]
     public class ImportBookDto
@@ -15,6 +13,7 @@
         public string Name { get; set; }
 
         [XmlElement("Genre")]
+        [Range(1, 3)]
         public int Genre { get; set; }
 
         [XmlElement("Price")]

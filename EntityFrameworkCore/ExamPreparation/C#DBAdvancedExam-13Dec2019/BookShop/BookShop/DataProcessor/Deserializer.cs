@@ -12,6 +12,7 @@
     using BookShop.Data.Models.Enums;
     using BookShop.DataProcessor.ImportDto;
     using Data;
+    using Microsoft.EntityFrameworkCore.Internal;
     using Newtonsoft.Json;
     using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContext;
 
@@ -70,7 +71,66 @@
 
         public static string ImportAuthors(BookShopContext context, string jsonString)
         {
-            throw new NotImplementedException();
+            var importAuthors = JsonConvert.DeserializeObject<ImportAuthorDto[]>(jsonString);
+
+            StringBuilder sb = new StringBuilder();
+
+            List<Author> authors = new List<Author>();
+
+            foreach (var a in importAuthors)
+            {
+                if (!IsValid(a))
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                bool doesEmailExists = authors.FirstOrDefault(x => x.Email == a.Email) != null;
+
+                if (doesEmailExists)
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                Author author = new Author
+                {
+                    FirstName = a.FirstName,
+                    LastName = a.LastName,
+                    Email = a.Email,
+                    Phone = a.Phone
+                };
+
+                foreach (var ab in a.Books)
+                {
+                    var book = context.Books.Find(ab.Id);
+
+                    if (book == null)
+                    {
+                        continue;
+                    }
+
+                    author.AuthorsBooks.Add(new AuthorBook
+                    {
+                        Author = author,
+                        Book = book
+                    });
+                }
+
+                if (author.AuthorsBooks.Count == 0)
+                {
+                    sb.AppendLine(ErrorMessage);
+                    continue;
+                }
+
+                authors.Add(author);
+                sb.AppendLine(string.Format(SuccessfullyImportedAuthor, (author.FirstName + " " + author.LastName), author.AuthorsBooks.Count));                               
+            }
+
+            context.Authors.AddRange(authors);
+            context.SaveChanges();
+
+            return sb.ToString().TrimEnd();
         }
 
         private static bool IsValid(object dto)

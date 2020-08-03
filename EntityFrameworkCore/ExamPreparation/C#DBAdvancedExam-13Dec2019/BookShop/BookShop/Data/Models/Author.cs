@@ -1,5 +1,6 @@
 ﻿namespace BookShop.Data.Models
 {
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -26,6 +27,7 @@
         [Required]
         public string Phone { get; set; }
 
+        [JsonIgnore]
         public ICollection<AuthorBook> AuthorsBooks { get; set; }
     }
 }
