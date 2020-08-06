@@ -67,7 +67,7 @@
                     DueDate = dueDate
                 };
 
-                foreach (var task in proj.Tasks)
+                foreach (var task in proj.Tasks) 
                 {
                     if (!IsValid(task))
                     {
