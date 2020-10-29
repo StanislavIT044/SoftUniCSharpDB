@@ -4,9 +4,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Photo
+    public class CoverPhoto
     {
-        public Photo()
+        public CoverPhoto()
         {
             this.Id = Guid.NewGuid().ToString();
         }
@@ -24,7 +24,3 @@
         public User User { get; set; }
     }
 }
-//-Id(Required)
-//-Picture byte[]
-//-CreatedOn DateTime
-//-User User(Required)

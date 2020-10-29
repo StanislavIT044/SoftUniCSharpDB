@@ -1,7 +1,7 @@
 ﻿namespace MySocialMediaDB.Data.Models
 {
     using System;
-    using System.Collections.Generic;
+    using MySocialMediaDB.Data.Models.Enums;
     using System.ComponentModel.DataAnnotations;
 
     public class User
@@ -21,10 +21,20 @@
         [MaxLength(30)]
         public string Surname { get; set; }
 
-        public string ProfilPictureId { get; set; }
-        public Photo? ProfilePicture { get; set; }
+        [Required]
+        public string Email { get; set; }
 
-        //public Photo? CoverPhoto { get; set; }
+        [Required]
+        public string Password { get; set; }
+
+        [Required]
+        public Gender Gender { get; set; }
+
+        public string ProfilPictureId { get; set; }
+        public ProfilePicture ProfilePicture { get; set; }
+
+        public string CoverPhotoId { get; set; }
+        public CoverPhoto CoverPhoto { get; set; }
 
         [Required]
         public DateTime BirthDate { get; set; }
@@ -33,10 +43,10 @@
         public DateTime CretedOn { get; set; }
 
         public string Country { get; set; }
-
+            
         public string Town { get; set; }
 
-        public virtual ICollection<User> Friends { get; set; }
+        //public virtual ICollection<User> Friends { get; set; }
 
         //TODO: --ICollection<Post> Posts
         //TODO: --ICollection < Page > Pages
@@ -47,7 +57,9 @@
 //-Id(Required)-
 //- Name(Required)-
 //- Surname(Required)-
-//- Gender
+//- Email(Required)-
+//- Password(Required)-
+//- Gender-
 //- CreatedOn DateTime(Required)-
 //- Birth date DateTime(Required)-
 //-

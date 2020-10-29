@@ -4,9 +4,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Photo
+    public class ProfilePicture
     {
-        public Photo()
+        public ProfilePicture()
         {
             this.Id = Guid.NewGuid().ToString();
         }
