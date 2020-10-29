@@ -10,7 +10,7 @@ using MySocialMediaDB.Data;
 namespace MySocialMediaDB.Migrations
 {
     [DbContext(typeof(MySocialMediaDbContext))]
-    [Migration("20201029231859_InitialCreate")]
+    [Migration("20201029233152_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,7 @@ namespace MySocialMediaDB.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("MySocialMediaDB.Data.Models.Country", b =>
@@ -68,7 +68,7 @@ namespace MySocialMediaDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Country");
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("MySocialMediaDB.Data.Models.CoverPhoto", b =>
@@ -120,7 +120,7 @@ namespace MySocialMediaDB.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Page");
+                    b.ToTable("Pages");
                 });
 
             modelBuilder.Entity("MySocialMediaDB.Data.Models.Photo", b =>
@@ -147,7 +147,7 @@ namespace MySocialMediaDB.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Photos");
+                    b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("MySocialMediaDB.Data.Models.Post", b =>
@@ -182,7 +182,7 @@ namespace MySocialMediaDB.Migrations
 
                     b.HasIndex("PhotoId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("MySocialMediaDB.Data.Models.ProfilePicture", b =>
@@ -234,7 +234,7 @@ namespace MySocialMediaDB.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("Reply");
+                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("MySocialMediaDB.Data.Models.Town", b =>
@@ -247,7 +247,7 @@ namespace MySocialMediaDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Town");
+                    b.ToTable("Towns");
                 });
 
             modelBuilder.Entity("MySocialMediaDB.Data.Models.User", b =>

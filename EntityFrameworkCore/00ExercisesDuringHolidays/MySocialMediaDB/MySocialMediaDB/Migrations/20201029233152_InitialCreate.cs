@@ -8,7 +8,7 @@ namespace MySocialMediaDB.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Country",
+                name: "Countries",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -17,11 +17,11 @@ namespace MySocialMediaDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Country", x => x.Id);
+                    table.PrimaryKey("PK_Countries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Town",
+                name: "Towns",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -29,11 +29,11 @@ namespace MySocialMediaDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Town", x => x.Id);
+                    table.PrimaryKey("PK_Towns", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reply",
+                name: "Replies",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -44,7 +44,7 @@ namespace MySocialMediaDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reply", x => x.Id);
+                    table.PrimaryKey("PK_Replies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,15 +69,15 @@ namespace MySocialMediaDB.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Country_CountryId",
+                        name: "FK_Users_Countries_CountryId",
                         column: x => x.CountryId,
-                        principalTable: "Country",
+                        principalTable: "Countries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Users_Town_TownId",
+                        name: "FK_Users_Towns_TownId",
                         column: x => x.TownId,
-                        principalTable: "Town",
+                        principalTable: "Towns",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -123,7 +123,7 @@ namespace MySocialMediaDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Page",
+                name: "Pages",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -134,15 +134,15 @@ namespace MySocialMediaDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Page", x => x.Id);
+                    table.PrimaryKey("PK_Pages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Page_CoverPhoto_CoverPhotoId",
+                        name: "FK_Pages_CoverPhoto_CoverPhotoId",
                         column: x => x.CoverPhotoId,
                         principalTable: "CoverPhoto",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Page_Users_UserId",
+                        name: "FK_Pages_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -150,7 +150,7 @@ namespace MySocialMediaDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Photos",
+                name: "Photo",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -161,15 +161,15 @@ namespace MySocialMediaDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.PrimaryKey("PK_Photo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photos_Page_PageId",
+                        name: "FK_Photo_Pages_PageId",
                         column: x => x.PageId,
-                        principalTable: "Page",
+                        principalTable: "Pages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Photos_Users_UserId",
+                        name: "FK_Photo_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -177,7 +177,7 @@ namespace MySocialMediaDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Post",
+                name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -190,29 +190,29 @@ namespace MySocialMediaDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Post", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Post_Users_AuthorId",
+                        name: "FK_Posts_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Post_Page_PageId",
+                        name: "FK_Posts_Pages_PageId",
                         column: x => x.PageId,
-                        principalTable: "Page",
+                        principalTable: "Pages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Post_Photos_PhotoId",
+                        name: "FK_Posts_Photo_PhotoId",
                         column: x => x.PhotoId,
-                        principalTable: "Photos",
+                        principalTable: "Photo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comment",
+                name: "Comments",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -224,29 +224,29 @@ namespace MySocialMediaDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comment", x => x.Id);
+                    table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comment_Users_AuthorId",
+                        name: "FK_Comments_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comment_Post_PostId",
+                        name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comment_AuthorId",
-                table: "Comment",
+                name: "IX_Comments_AuthorId",
+                table: "Comments",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comment_PostId",
-                table: "Comment",
+                name: "IX_Comments_PostId",
+                table: "Comments",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
@@ -257,38 +257,38 @@ namespace MySocialMediaDB.Migrations
                 filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Page_CoverPhotoId",
-                table: "Page",
+                name: "IX_Pages_CoverPhotoId",
+                table: "Pages",
                 column: "CoverPhotoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Page_UserId",
-                table: "Page",
+                name: "IX_Pages_UserId",
+                table: "Pages",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_PageId",
-                table: "Photos",
+                name: "IX_Photo_PageId",
+                table: "Photo",
                 column: "PageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_UserId",
-                table: "Photos",
+                name: "IX_Photo_UserId",
+                table: "Photo",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_AuthorId",
-                table: "Post",
+                name: "IX_Posts_AuthorId",
+                table: "Posts",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_PageId",
-                table: "Post",
+                name: "IX_Posts_PageId",
+                table: "Posts",
                 column: "PageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_PhotoId",
-                table: "Post",
+                name: "IX_Posts_PhotoId",
+                table: "Posts",
                 column: "PhotoId");
 
             migrationBuilder.CreateIndex(
@@ -298,13 +298,13 @@ namespace MySocialMediaDB.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reply_AuthorId",
-                table: "Reply",
+                name: "IX_Replies_AuthorId",
+                table: "Replies",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reply_CommentId",
-                table: "Reply",
+                name: "IX_Replies_CommentId",
+                table: "Replies",
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
@@ -323,26 +323,26 @@ namespace MySocialMediaDB.Migrations
                 column: "TownId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Reply_Users_AuthorId",
-                table: "Reply",
+                name: "FK_Replies_Users_AuthorId",
+                table: "Replies",
                 column: "AuthorId",
                 principalTable: "Users",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Reply_Comment_CommentId",
-                table: "Reply",
+                name: "FK_Replies_Comments_CommentId",
+                table: "Replies",
                 column: "CommentId",
-                principalTable: "Comment",
+                principalTable: "Comments",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_Page_PageId",
+                name: "FK_Users_Pages_PageId",
                 table: "Users",
                 column: "PageId",
-                principalTable: "Page",
+                principalTable: "Pages",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -354,35 +354,35 @@ namespace MySocialMediaDB.Migrations
                 table: "CoverPhoto");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Page_Users_UserId",
-                table: "Page");
+                name: "FK_Pages_Users_UserId",
+                table: "Pages");
 
             migrationBuilder.DropTable(
                 name: "ProfilePictures");
 
             migrationBuilder.DropTable(
-                name: "Reply");
+                name: "Replies");
 
             migrationBuilder.DropTable(
-                name: "Comment");
+                name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "Photos");
+                name: "Photo");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Country");
+                name: "Countries");
 
             migrationBuilder.DropTable(
-                name: "Page");
+                name: "Pages");
 
             migrationBuilder.DropTable(
-                name: "Town");
+                name: "Towns");
 
             migrationBuilder.DropTable(
                 name: "CoverPhoto");

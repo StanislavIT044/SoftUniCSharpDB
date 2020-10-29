@@ -16,17 +16,23 @@
 
         public DbSet<User> Users { get; set; }
 
-		public DbSet<Photo> Photos { get; set; }
+		public DbSet<Country> Countries { get; set; }
+
+		public DbSet<Town> Towns { get; set; }
+
+		public DbSet<Reply> Replies { get; set; }
+
+		public DbSet<Photo> Photo { get; set; }
 
 		public DbSet<ProfilePicture> ProfilePictures { get; set; }
 
 		public DbSet<CoverPhoto> CoverPhoto { get; set; }
 
-		//public DbSet<Post> Posts { get; set; }
+		public DbSet<Post> Posts { get; set; }
 
-		//public DbSet<Comment> Comments { get; set; }
+		public DbSet<Comment> Comments { get; set; }
 
-		//public DbSet<Page> Pages { get; set; }
+		public DbSet<Page> Pages { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
 		{
@@ -38,8 +44,6 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-			//TODO: Write relations between photo and user
-			//Също така не забравяй да изключиш каскадното триене
 			modelBuilder.Entity<Page>(entity =>
 			{
 				entity.HasOne(p => p.User)
