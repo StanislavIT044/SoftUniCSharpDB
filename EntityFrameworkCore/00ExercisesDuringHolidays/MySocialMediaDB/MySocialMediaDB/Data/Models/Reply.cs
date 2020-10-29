@@ -3,9 +3,9 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class Photo
+    public class Reply
     {
-        public Photo()
+        public Reply()
         {
             this.Id = Guid.NewGuid().ToString();
         }
@@ -13,15 +13,13 @@
         public string Id { get; set; }
 
         [Required]
-        public byte[] Picture { get; set; }
+        public string Text { get; set; }
 
         [Required]
         public DateTime CreatedOn { get; set; }
 
-        public string UserId { get; set; }
-        public User User { get; set; }
-
-        public string PageId { get; set; }
-        public Page Page { get; set; }
+        [Required]
+        public string AuthorId { get; set; }
+        public User Author { get; set; }
     }
 }

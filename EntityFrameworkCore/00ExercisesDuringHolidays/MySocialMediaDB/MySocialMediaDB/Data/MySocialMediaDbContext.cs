@@ -40,9 +40,22 @@
         {
 			//TODO: Write relations between photo and user
 			//Също така не забравяй да изключиш каскадното триене
+			modelBuilder.Entity<Page>(entity =>
+			{
+				entity.HasOne(p => p.User)
+					.WithMany(u => u.Pages)
+					.HasForeignKey(p => p.UserId);
+			});
 
+			modelBuilder.Entity<Comment>(entity =>
+			{
+				entity.HasOne(c => c.Post)
+					.WithMany(p => p.Comments)
+					.HasForeignKey(c => c.PostId)
+					.OnDelete(DeleteBehavior.Restrict);
+			});
 
-			base.OnModelCreating(modelBuilder);
+			//base.OnModelCreating(modelBuilder);
 		}
     }
 }

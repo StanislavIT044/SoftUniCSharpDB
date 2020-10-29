@@ -3,12 +3,17 @@
     using System;
     using MySocialMediaDB.Data.Models.Enums;
     using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class User
     {
         public User()
         {
             this.Id = Guid.NewGuid().ToString();
+            this.Photos = new HashSet<Photo>();
+            this.Posts = new HashSet<Post>();
+            this.Pages = new HashSet<Page>();
         }
 
         public string Id { get; set; }
@@ -42,27 +47,16 @@
         [Required]
         public DateTime CretedOn { get; set; }
 
-        public string Country { get; set; }
-            
-        public string Town { get; set; }
+        public string CountryId { get; set; }
+        public Country Country { get; set; }
 
-        //public virtual ICollection<User> Friends { get; set; }
+        public string TownId { get; set; }
+        public Town Town { get; set; }
 
-        //TODO: --ICollection<Post> Posts
-        //TODO: --ICollection < Page > Pages
+        public virtual ICollection<Photo> Photos { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; }
+
+        public virtual ICollection<Page> Pages { get; set; }
     }
 }
-
-//USER:
-//-Id(Required)-
-//- Name(Required)-
-//- Surname(Required)-
-//- Email(Required)-
-//- Password(Required)-
-//- Gender-
-//- CreatedOn DateTime(Required)-
-//- Birth date DateTime(Required)-
-//-
-//--ICollection < User > Friends-
-//--ICollection<Post> Posts
-//--ICollection < Page > Pages
