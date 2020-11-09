@@ -35,6 +35,8 @@
         [Required]
         public Gender Gender { get; set; }
 
+        public int Test { get; set; }
+
         public string ProfilPictureId { get; set; }
         public ProfilePicture ProfilePicture { get; set; }
 
