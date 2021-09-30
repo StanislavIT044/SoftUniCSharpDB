@@ -21,8 +21,6 @@
         }
         private static async Task InsertIntoTables()
         {
-            await OpenSqlConnectionAsync(connectionString, dbName);
-
             string insertQuery =
                 @"INSERT INTO Countries ([Name]) VALUES ('Bulgaria'),('England'),('Cyprus'),('Germany'),('Norway')
                   INSERT INTO Towns ([Name], CountryCode) VALUES ('Plovdiv', 1),('Varna', 1),('Burgas', 1),('Sofia', 1),('London', 2),('Southampton', 2),('Bath', 2),('Liverpool', 2),('Berlin', 3),('Frankfurt', 3),('Oslo', 4)                                                
@@ -30,12 +28,15 @@
                   INSERT INTO EvilnessFactors (Name) VALUES ('Super good'),('Good'),('Bad'), ('Evil'),('Super evil') 
                   INSERT INTO Villains (Name, EvilnessFactorId) VALUES ('Gru',2),('Victor',1),('Jilly',3),('Miro',4),('Rosen',5),('Dimityr',1),('Dobromir',2)
                   INSERT INTO MinionsVillains (MinionId, VillainId) VALUES (4,2),(1,1),(5,7),(3,5),(2,6),(11,5),(8,4),(9,7),(7,1),(1,3),(7,3),(5,3),(4,3),(1,2),(2,1),(2,7)";
+           
+            await OpenSqlConnectionAsync(connectionString, dbName);
+
+            SqlCommand command = new SqlCommand(insertQuery, connection);
 
             using (connection)
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand(insertQuery, connection);
                     await command.ExecuteNonQueryAsync();
 
                     Console.WriteLine("Insert query is completed successfully!");
@@ -50,8 +51,6 @@
 
         private static async Task CreateTables()
         {
-            await OpenSqlConnectionAsync(connectionString, dbName);
-
             string createTablesQuery =
                 @"CREATE TABLE Countries (Id INT PRIMARY KEY IDENTITY,Name VARCHAR(50))
                   CREATE TABLE Towns(Id INT PRIMARY KEY IDENTITY,Name VARCHAR(50), CountryCode INT FOREIGN KEY REFERENCES Countries(Id))                     
@@ -59,12 +58,15 @@
                   CREATE TABLE EvilnessFactors(Id INT PRIMARY KEY IDENTITY, Name VARCHAR(50))                                   
                   CREATE TABLE Villains (Id INT PRIMARY KEY IDENTITY, Name VARCHAR(50), EvilnessFactorId INT FOREIGN KEY REFERENCES EvilnessFactors(Id))                      
                   CREATE TABLE MinionsVillains (MinionId INT FOREIGN KEY REFERENCES Minions(Id),VillainId INT FOREIGN KEY REFERENCES Villains(Id),CONSTRAINT PK_MinionsVillains PRIMARY KEY (MinionId, VillainId))";
+            
+            await OpenSqlConnectionAsync(connectionString, dbName);
+
+            SqlCommand command = new SqlCommand(createTablesQuery, connection);
 
             using (connection)
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand(createTablesQuery, connection);
                     await command.ExecuteNonQueryAsync();
 
                     Console.WriteLine($"Tables are created successfully!");
@@ -79,16 +81,16 @@
 
         private static async Task InitDB()
         {
+            string createDbQuery = $"CREATE DATABASE {dbName}";
+
             await OpenSqlConnectionAsync(connectionString, "master");
 
-            string createDbQuery = $"CREATE DATABASE {dbName}";
+            SqlCommand createDb = new SqlCommand(createDbQuery, connection);
 
             using (connection) 
             {
                 try
                 {
-                    SqlCommand createDb = new SqlCommand(createDbQuery, connection);
-
                     await createDb.ExecuteNonQueryAsync();
 
                     Console.WriteLine($"Database {dbName} is created seccessfully!");
@@ -99,7 +101,6 @@
                     Console.WriteLine(ex.Message);
                 }
             }
-
         }
 
         private static async Task OpenSqlConnectionAsync(string connectionString, string dbName)

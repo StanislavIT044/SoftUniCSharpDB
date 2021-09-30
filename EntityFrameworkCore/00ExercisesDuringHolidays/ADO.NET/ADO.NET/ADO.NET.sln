@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitDB", "ADO.NET\InitDB.csproj", "{6F5F50FD-49D9-409A-A0FC-7ACB64364E69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01InitDB", "ADO.NET\01InitDB.csproj", "{6F5F50FD-49D9-409A-A0FC-7ACB64364E69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02And03GetInfo", "02And03GetInfo\02And03GetInfo.csproj", "{3A03F3AF-DA8B-4561-A162-AEE2571E04ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6F5F50FD-49D9-409A-A0FC-7ACB64364E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F5F50FD-49D9-409A-A0FC-7ACB64364E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F5F50FD-49D9-409A-A0FC-7ACB64364E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A03F3AF-DA8B-4561-A162-AEE2571E04ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A03F3AF-DA8B-4561-A162-AEE2571E04ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A03F3AF-DA8B-4561-A162-AEE2571E04ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A03F3AF-DA8B-4561-A162-AEE2571E04ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
